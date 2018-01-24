@@ -33,12 +33,15 @@ class UserRequest extends FormRequest
             ],
             'email' => 'required|email',
             'introduction' => 'max:80',
+            'avatar' => 'mimes:jpeg,bmp,png,gif|dimensions:min_width=200,min_height=200',
         ];
     }
 
     public function messages()
     {
         return [
+            'avatar.mimes' =>'头像 必须是一个 jpeg, bmp, png, gif 类型的文件。',
+            'avatar.dimensions' => '图片的清晰度不够，宽和高需要 200px 以上。',
             'name.required' => '用户名 不能为空。',
             'name.between' => '用户名 必须介于 2 - 25 个字符之间。',
             'name.regex' => '用户名 格式不正确。',
