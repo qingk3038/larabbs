@@ -14,7 +14,7 @@ class SeedCategoriesData extends Migration
      */
     public function up()
     {
-        $time = Carbon::createFromDate();
+        $time = Carbon::now()->toDateTimeString();
         $categories = [
             [
                 'name'        => '分享',
