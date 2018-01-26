@@ -7,12 +7,7 @@ class Topic extends Model
     protected $fillable = [
         'title',
         'body',
-        'user_id',
         'category_id',
-        'reply_count',
-        'view_count',
-        'last_reply_user_id',
-        'order',
         'excerpt',
         'slug',
     ];
@@ -54,5 +49,10 @@ class Topic extends Model
         // 按照创建时间排序
 
         return $query->latest();
+    }
+
+    public function link($params = [])
+    {
+        return route('topics.show',array_merge([$this->id, $this->slug], $params));
     }
 }
