@@ -31,8 +31,8 @@ class SlugTranslateHandler
         // 构建请求参数
         $query = http_build_query([
             'q'     =>  $text,
-            'from'  => "zh",
-            'to'    => "en",
+            'from'  => 'zh',
+            'to'    => 'en',
             'appid' => $appid,
             'salt'  => $salt,
             'sign'  => $sign,
@@ -61,6 +61,7 @@ class SlugTranslateHandler
 
         // 尝试获取获取翻译结果
         if (isset($result['trans_result'][0]['dst'])) {
+            @file_put_contents('translate.log', 'API 请求成功'. $result['trans_result'][0]['src']);
             return str_slug($result['trans_result'][0]['dst']);
         } else {
             // 如果百度翻译没有结果，使用拼音作为后备计划。
