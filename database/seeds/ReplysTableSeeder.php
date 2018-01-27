@@ -19,7 +19,7 @@ class ReplysTableSeeder extends Seeder
         $topicIds = Topic::all()->pluck('id')->toArray();
 
         $replys = factory(Reply::class)
-            ->times(50)
+            ->times(1000)
             ->make()
             ->each(function ($reply, $index) use ($faker, $userIds, $topicIds) {
                 // 从用户 ID 数组中随机取出一个并赋值
