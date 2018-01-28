@@ -55,7 +55,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            
+
                             <li>
                                 <a href="{{ route('users.show', Auth::id()) }}">
                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
