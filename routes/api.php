@@ -19,6 +19,14 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
     'as' => 'api',
 ], function ($api) {
-    $api->post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store'); // 发送短信验证码
-    $api->post('users', 'UsersController@store')->name('users.store'); // 用户注册
+    $api->group([
+        'middleware' => 'api.throttle',
+        'limit' => config('api.rate_limits.sign.limit'),
+        'expires' => config('api.rate_limits.sign.expires'),
+    ], function ($api) {
+        // 发送短信验证码
+        $api->post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store');
+        // 用户注册
+        $api->post('users', 'UsersController@store')->name('users.store');
+    });
 });
