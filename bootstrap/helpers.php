@@ -61,27 +61,36 @@ if (!function_exists('model_plural_name')) {
 
 if (!function_exists('send_sms')) {
     // 发送验证码短信
-    function send_sms($mobile)
+    function send_sms($phone)
     {
-        $sms = app('easysms');
-
         try {
-            $sms->send($mobile, [
-                'content' => '【' . config('app.name') . '】您的验证码是 1234。如非本人操作，请忽略本短信',
-            ]);
+            $sms = app('easysms');
+
+            $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
+
+            if (!app()->isLocal()) {
+                $sms->send($phone, [
+                    'content' => '【' . config('app.name') . '】您的验证码是 ' . $code . '。如非本人操作，请忽略本短信',
+                ]);
+            }
+
+            $key = 'verificationCode_' . str_random(15);
+
+            $expiredAt = now()->addMinutes(10);
+
+            \Cache::put($key, ['phone' => $phone, 'code' => $code], $expiredAt);
 
             $result = [
                 'status' => true,
-                'data' => null,
+                'data' => [
+                    'key' => $key,
+                    'expired_at' => $expiredAt->toDateTimeString(),
+                ],
             ];
-        } catch (\GuzzleHttp\Exception\ClientException $exception) {
-            $response = $exception->getResponse();
-
-            $result = json_decode($response->getBody()->getContents(), true);
-
+        } catch (\Exception $exception) {
             $result = [
                 'status' => false,
-                'data' => $result,
+                'msg' => '短信发送异常，请稍后重试',
             ];
         }
 
