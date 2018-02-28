@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class VerificationCodeRequest extends Request
+class VerificationCodeFormRequest extends FormRequest
 {
     public function rules()
     {

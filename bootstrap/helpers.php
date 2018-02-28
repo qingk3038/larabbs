@@ -87,6 +87,9 @@ if (!function_exists('send_sms')) {
                     'expired_at' => $expiredAt->toDateTimeString(),
                 ],
             ];
+            if (app()->isLocal()) {
+                $result['data']['code'] = $code;
+            }
         } catch (\Exception $exception) {
             $result = [
                 'status' => false,
